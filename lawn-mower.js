@@ -1,18 +1,17 @@
- export const getMowerFinalPosition = (plan, initial_position, [...instructions]) =>{
+ export const getMowerFinalPosition = (plan, position, [...instructions]) => {
    plan = plan.split(" "); 
-   let position = initial_position.split(" "); 
+    position = position.split(" "); 
 
-    if(!isValideCoordinates(plan,position)) return 'Erreur de coordonnées!'
+    if(!isValideCoordinates(plan, position)) return 'Erreur de coordonnées!';
     
         instructions.map( instruction => {
             return move(position, instruction, plan);
           });
         
-          return position.join(" ");
+          return position.join(" "); // 2 4 S
 }
 
-function move(coordinates, instruction, plan)
-{
+function move(coordinates, instruction, plan) {
   
   switch (instruction) {
     case 'L':
@@ -28,8 +27,8 @@ function move(coordinates, instruction, plan)
 
 
 
-function rotateTo(coordinates,direction_of_rotation) // N - W - E - S
-{
+function rotateTo(coordinates,direction_of_rotation) { // N - W - E - S
+
   // N / L -> W  // N / R -> E  // S / L -> E // S / R -> W  // E / L -> N  // E / R -> S  // W / L -> S  // W / R -> N
   let new_orientation = null;
   switch (coordinates[2]) {
@@ -47,33 +46,32 @@ function rotateTo(coordinates,direction_of_rotation) // N - W - E - S
       break;
   }
   coordinates[2] = new_orientation;
-  return coordinates ;
+  return coordinates;
 }
 
 
-function moveFoward(coordinates, plan) // [1, 2, N]
-{
-  let absice = +coordinates[0]; 
-  let ordonne = +coordinates[1];
+function moveFoward(coordinates, plan) { // [1, 2, N] (x, y, N)
+  let x = +coordinates[0]; 
+  let y = +coordinates[1];
   switch (coordinates[2]) {
     case 'N':
-      ordonne = (ordonne + 1 <= +plan[1]) ? ordonne + 1 : ordonne ; 
+      y = (y + 1 <= +plan[1]) ? y + 1 : y; 
       break;
     case 'W':
-      absice = (absice - 1 >= 0) ? absice - 1 : absice ;
+      x = (x - 1 >= 0) ? x - 1 : x;
       break;
     case 'S':
-      ordonne = (ordonne - 1 >= 0) ? ordonne - 1 : ordonne;
+      y = (y - 1 >= 0) ? y - 1 : y;
       break;
     case 'E':
-      absice = (absice + 1 <= +plan[0]) ? absice + 1 : absice;
+      x = (x + 1 <= +plan[0]) ? x + 1 : x;
       break;
   }
-    coordinates[0] = absice; coordinates[1] = ordonne;
+    coordinates[0] = x; coordinates[1] = y;
     return coordinates;
 }
 
-function isValideCoordinates(plan, coordinates) {
+function isValideCoordinates(plan, coordinates) { // boolean
     return  (+coordinates[0] >= 0 && +coordinates[0] <= +plan[0]) && (+coordinates[1] >= 0 && +coordinates[1] <= +plan[1]) ? true : false
 }
 
