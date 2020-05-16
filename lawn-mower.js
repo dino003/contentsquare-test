@@ -1,17 +1,17 @@
- export const getMowerFinalPosition = (plan, position, [...instructions]) => {
+ export const printFinalPosition = (plan, position, [...instructions]) => {
    plan = plan.split(" "); 
     position = position.split(" "); 
 
     if(!isValideCoordinates(plan, position)) return 'Erreur de coordonnées!';
     
         instructions.map( instruction => {
-            return move(position, instruction, plan);
+            return getCurrentPosition(position, instruction, plan);
           });
         
           return position.join(" "); // 2 4 S
 }
 
-function move(coordinates, instruction, plan) {
+const getCurrentPosition = (coordinates, instruction, plan) => {
   
   switch (instruction) {
     case 'L':
@@ -19,7 +19,7 @@ function move(coordinates, instruction, plan) {
       coordinates = rotateTo(coordinates, instruction);
       break;
     case 'F':
-      coordinates = moveFoward(coordinates, plan);
+      coordinates = getNextPosition(coordinates, plan);
       break;
   }
   return coordinates;
@@ -27,7 +27,7 @@ function move(coordinates, instruction, plan) {
 
 
 
-function rotateTo(coordinates,direction_of_rotation) { // N - W - E - S
+const rotateTo = (coordinates,direction_of_rotation) => { // N - W - E - S
 
   // N / L -> W  // N / R -> E  // S / L -> E // S / R -> W  // E / L -> N  // E / R -> S  // W / L -> S  // W / R -> N
   let new_orientation = null;
@@ -50,7 +50,7 @@ function rotateTo(coordinates,direction_of_rotation) { // N - W - E - S
 }
 
 
-function moveFoward(coordinates, plan) { // [1, 2, N] (x, y, N)
+const getNextPosition = (coordinates, plan) => { // [1, 2, N] (x, y, N)
   let x = +coordinates[0]; 
   let y = +coordinates[1];
   switch (coordinates[2]) {
@@ -71,7 +71,7 @@ function moveFoward(coordinates, plan) { // [1, 2, N] (x, y, N)
     return coordinates;
 }
 
-function isValideCoordinates(plan, coordinates) { // boolean
+const isValideCoordinates = (plan, coordinates) => { // boolean
     return  (+coordinates[0] >= 0 && +coordinates[0] <= +plan[0]) && (+coordinates[1] >= 0 && +coordinates[1] <= +plan[1]) ? true : false
 }
 
